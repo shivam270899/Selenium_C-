@@ -18,8 +18,13 @@ namespace TestProject
         [Test, Category("Smoke")]
         public void TestWindowMax()
         {
-            IWebElement element = driver.FindElement(By.XPath("//*[@class='nav-cart-icon nav-sprite']"));
-            element.Click();
+            IWebElement element = driver.FindElement(By.XPath("//*[text()=' BOOK TICKET ']"));
+            if(element.Enabled){
+                Console.WriteLine("Page lOaded Succesfully");
+            }else{
+                WebDriverWait wait = new(driver, TimeSpan.FromSeconds(5));
+                wait.Until(driver => element.Enabled && element.Displayed ? element  : null);
+            }
         }
 
         [Test, Category("Regresion")]

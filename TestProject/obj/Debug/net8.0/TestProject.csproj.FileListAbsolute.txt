@@ -101,3 +101,4 @@
 /Users/shivam/Desktop/selenium/TestProject/obj/Debug/net8.0/TestProject.pdb
 /Users/shivam/Desktop/selenium/TestProject/obj/Debug/net8.0/TestProject.genruntimeconfig.cache
 /Users/shivam/Desktop/selenium/TestProject/obj/Debug/net8.0/ref/TestProject.dll
+/Users/shivam/Desktop/selenium/TestProject/obj/Debug/net8.0/TestProject.sourcelink.json
