@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using NUnit.Framework.Internal;
 using OpenQA.Selenium;
 using OpenQA.Selenium.BiDi.Modules.Input;
@@ -19,11 +20,14 @@ namespace TestProject
         public void TestWindowMax()
         {
             IWebElement element = driver.FindElement(By.XPath("//*[text()=' BOOK TICKET ']"));
-            if(element.Enabled){
+            if (element.Enabled)
+            {
                 Console.WriteLine("Page lOaded Succesfully");
-            }else{
+            }
+            else
+            {
                 WebDriverWait wait = new(driver, TimeSpan.FromSeconds(5));
-                wait.Until(driver => element.Enabled && element.Displayed ? element  : null);
+                wait.Until(driver => element.Enabled && element.Displayed ? element : null);
             }
         }
 
@@ -45,23 +49,38 @@ namespace TestProject
             loginBtn.Submit();
         }
 
-        [Test, Category("Smoke")]
-        public void DropdownMultiple()
+        [Test]
+        public void DropDownSingleSelect()
         {
+            IWebElement element_drop = driver.FindElement(By.XPath("//*[@class='ui-dropdown-label-container ng-tns-c65-11']"));
+            element_drop.Click();
 
-            IWebElement country_list = driver.FindElement(By.XPath("//*[@class='icp-nav-link-inner']"));
+            string value = "Sleeper (SL)";
 
-            Actions mouseOver = new(driver);
-            mouseOver.MoveToElement(country_list).Perform();
+            // Locate all the <li> elements inside the dropdown
+            IReadOnlyCollection<IWebElement> dropdownOptions = driver.FindElements(By.XPath("//*[@class='ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset ng-tns-c65-11']//child::li"));
 
-            Thread.Sleep(2000);
-            IWebElement element = driver.FindElement(By.XPath("//*[@lang='hi-IN']//i[@class='icp-radio']"));
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
-            wait.Until(driver => element.Enabled && element.Displayed ? element : null);
+            // Iterate through each option and print its text
+            foreach (IWebElement option in dropdownOptions)
+            {
+                string optionText = option.Text;
+                if(optionText == value){
+                    option.Click();
+                }
+            }
 
-            element.Click();
+            IWebElement element_category = driver.FindElement(By.XPath("//*[@class='ui-dropdown-label-container ng-tns-c65-12']"));
+            element_category.Click();
 
-            Thread.Sleep(4000);
+            IReadOnlyCollection<IWebElement> dropdownOptions_category = driver.FindElements(By.XPath("//*[@class='ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset ng-tns-c65-12']//child::li"));
+            foreach(IWebElement option in dropdownOptions_category){
+                string optionText = option.Text;
+                Console.WriteLine(optionText);
+                if(optionText == "TATKAL"){
+                    option.Click();
+                    return;
+                }
+            }
         }
     }
 }
