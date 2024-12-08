@@ -16,19 +16,15 @@ namespace TestProject
 
     {
 
-        [Test, Category("Smoke")]
-        public void TestWindowMax()
+        [Test, Category("Smoke"), Category("Module 1")]
+        public void TestWindowMax_MultipleWindow()
         {
-            IWebElement element = driver.FindElement(By.XPath("//*[text()=' BOOK TICKET ']"));
-            if (element.Enabled)
-            {
-                Console.WriteLine("Page lOaded Succesfully");
-            }
-            else
-            {
-                WebDriverWait wait = new(driver, TimeSpan.FromSeconds(5));
-                wait.Until(driver => element.Enabled && element.Displayed ? element : null);
-            }
+            IWebElement element = driver.FindElement(By.XPath("//ul/li/a[@class='nav-link p-2'][@href='/tips']"));
+            string elementText = element.Text;
+
+            Assert.AreEqual("Automation Tips", elementText);
+            element.Click();
+
         }
 
         [Test, Category("Regresion")]
@@ -64,7 +60,8 @@ namespace TestProject
             foreach (IWebElement option in dropdownOptions)
             {
                 string optionText = option.Text;
-                if(optionText == value){
+                if (optionText == value)
+                {
                     option.Click();
                 }
             }
@@ -73,10 +70,12 @@ namespace TestProject
             element_category.Click();
 
             IReadOnlyCollection<IWebElement> dropdownOptions_category = driver.FindElements(By.XPath("//*[@class='ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset ng-tns-c65-12']//child::li"));
-            foreach(IWebElement option in dropdownOptions_category){
+            foreach (IWebElement option in dropdownOptions_category)
+            {
                 string optionText = option.Text;
                 Console.WriteLine(optionText);
-                if(optionText == "TATKAL"){
+                if (optionText == "TATKAL")
+                {
                     option.Click();
                     return;
                 }

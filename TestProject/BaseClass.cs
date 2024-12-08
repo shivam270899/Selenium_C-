@@ -11,7 +11,7 @@ namespace TestProject
         public void Initialization(){
             driver = new ChromeDriver();
 
-            driver.Url = "https://www.irctc.co.in/nget/train-search";
+            driver.Url = "https://practice.expandtesting.com/";
             driver.Manage().Window.Maximize();
         }
 
