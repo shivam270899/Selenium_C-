@@ -5,7 +5,9 @@ using TestProject;
 
 namespace Utilities{
     public class BrowserUtilies{
-        public IWebDriver Init(IWebDriver driver, Browser browserName){
+        IWebDriver driver;
+        public IWebDriver Init(Browser browserName){
+            
             switch (browserName)
             {
                 case Browser.chrome: driver = new ChromeDriver(); break;

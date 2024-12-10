@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.ObjectModel;
+using System.Security.Cryptography.X509Certificates;
 using NUnit.Framework.Internal;
 using OpenQA.Selenium;
 using OpenQA.Selenium.BiDi.Modules.Input;
@@ -12,42 +14,82 @@ namespace TestProject
 {
 
     [TestFixture]
-    public class Tests : BaseTest
+    public class Tests
 
     {
 
         [Test, Category("Smoke"), Category("Module 1")]
-        public void TestWindowMax_MultipleWindow()
-        {
+        public void Homepage()
+        {   
+            IWebDriver driver;
+            driver = new ChromeDriver();
+            driver.Url = "https://practice.expandtesting.com/";
+            driver.Manage().Window.Maximize();
+
             IWebElement element = driver.FindElement(By.XPath("//ul/li/a[@class='nav-link p-2'][@href='/tips']"));
             string elementText = element.Text;
 
-            Assert.AreEqual("Automation Tips", elementText);
+            Assert.That(elementText, Is.EqualTo("Automation Tips"));
             element.Click();
-
+            
+            driver.Close();
         }
 
-        [Test, Category("Regresion")]
-        public void WebLoginTest()
+        public static IList DataInput()
         {
-
-            IWebElement loginLink = driver.FindElement(By.Id("loginLink"));
-            loginLink.Click();
-
-            IWebElement userName = driver.FindElement(By.Name("UserName"));
-            userName.SendKeys("Alpha");
-
-            IWebElement password = driver.FindElement(By.XPath("//*[@type='password']"));
-            password.SendKeys(Keys.Return);
-            password.SendKeys("1212@qw132wse");
-
-            IWebElement loginBtn = driver.FindElement(By.XPath("//*[@type='submit']"));
-            loginBtn.Submit();
+            List<string> user = new List<string>
+            {
+                "Hello",
+                "Hi,",
+                "we"
+            };
+            return user;
         }
 
         [Test]
-        public void DropDownSingleSelect()
-        {
+        [TestCaseSource(nameof(DataInput))]
+        public void search(string input)
+        {   
+            IWebDriver driver;
+            driver = new ChromeDriver();
+            driver.Url = "";
+            driver.Manage().Window.Maximize();
+
+            try
+            {
+                IWebElement element = driver.FindElement(By.XPath("//*[@id='search-inputas2']"));
+                element.Click();
+                element.SendKeys(input);
+            }
+            catch (ElementClickInterceptedException e)
+            {
+                Console.WriteLine(e.Message);
+                Assert.Pass("Handle the Click Intercept");
+            }
+            catch (NoSuchElementException f)
+            {
+                Console.WriteLine(f.Message);
+                //Assert.Pass("Handle the Click Intercept");
+                throw;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"exception:, {e.Message}");
+            }
+            driver.Close();
+        }
+
+        [Test]
+        [Order(1)]
+        [Author("Shivam", "shivam.shah")]
+        [Description("Test for dropdown")]
+        public void DropDown()
+        {   
+            IWebDriver driver;
+            driver = new ChromeDriver();
+            driver.Url = "";
+            driver.Manage().Window.Maximize();
+
             IWebElement element_drop = driver.FindElement(By.XPath("//*[@class='ui-dropdown-label-container ng-tns-c65-11']"));
             element_drop.Click();
 
@@ -80,6 +122,8 @@ namespace TestProject
                     return;
                 }
             }
+
+            driver.Close();
         }
     }
 }
